@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/employee/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDepartmentDto } from './create-department.dto';
 import { UpdateDepartmentDto } from './update-department.dto';
 import { Department } from '@prisma/client'; // Import Prisma types

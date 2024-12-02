@@ -2,7 +2,7 @@
 import { Module } from '@nestjs/common';
 import { SalaryService } from './salary.service';
 import { SalaryController } from './salary.controller';
-import { PrismaService } from 'src/employee/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   imports: [],

@@ -3,32 +3,33 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import serverless from 'serverless-http';
 
-let cachedHandler: any; // Caching the handler for re-use in serverless environments
+let cachedHandler: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for your frontend domain
+  // Enable CORS
   app.enableCors({
-    origin: 'https://xoka-hr-management.vercel.app',
-    methods: 'GET, POST, PUT, DELETE', // Allowed HTTP methods
-    allowedHeaders: 'Content-Type, Accept', // Allowed headers
+    origin: '*',
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type, Accept',
   });
 
-  // Configure Swagger
+  // Set up Swagger API docs
   const config = new DocumentBuilder()
-    .setTitle('API Documentation')
-    .setDescription('The API description for HR-Management-System application')
+    .setTitle('HR Management API')
+    .setDescription('HR Management System API Documentation')
     .setVersion('1.0')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // Swagger docs available at /api
+  SwaggerModule.setup('api', app, document);
 
   await app.init();
   return app.getHttpAdapter().getInstance();
 }
 
+// Serverless function handler
 export const handler = async (event: any, context: any) => {
   if (!cachedHandler) {
     const appInstance = await bootstrap();

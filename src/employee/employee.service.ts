@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Employee } from '@prisma/client';  // Import Prisma namespace and Employee type from Prisma
 import { CreateEmployeeDto } from './create-employee.dto';
 @Injectable()

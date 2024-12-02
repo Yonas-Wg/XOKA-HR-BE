@@ -5,7 +5,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { CompanyModule } from './company/company.module';
 import { DepartmentModule } from './department/department.module';
 import { SalaryModule } from './salary/salary.module';
-import { PrismaService } from './employee/prisma.service';
+import { PrismaService } from './prisma/prisma.service';
 import { CandidateModule } from './candidates/candidates.m';
 
 @Module({
