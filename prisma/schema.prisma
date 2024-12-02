@@ -1,0 +1,62 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql" // Using PostgreSQL as the database
+  url      = env("DATABASE_URL") // Database URL loaded from the environment variable
+}
+
+generator client {
+  provider = "prisma-client-js" // Prisma client for interacting with the database
+}
+
+// Company model
+model Company {
+  id          String       @id @default(uuid()) @db.Uuid // UUID as primary key
+  name        String
+  departments Department[] // One-to-many relation with Department
+  employees   Employee[] // One-to-many relation with Employee
+  candidates  Candidate[] // One-to-many relation with Candidate
+}
+
+// Department model
+model Department {
+  id        String     @id @default(uuid()) @db.Uuid // UUID as primary key
+  name      String
+  companyId String     @db.Uuid // Foreign key to Company (UUID type)
+  company   Company    @relation(fields: [companyId], references: [id]) // Relationship with Company
+  employees Employee[] // One-to-many relation with Employee
+}
+
+// Employee model
+model Employee {
+  id           String @id @default(cuid()) // Unique ID for Employee (CUID)
+  name         String
+  companyId    String @db.Uuid // Foreign key to Company
+ departmentId String?   // Make departmentId nullable
+  department   Department? @relation(fields: [departmentId], references: [id])
+  salaryId     String @db.Uuid // Foreign key to Salary
+
+  company    Company    @relation(fields: [companyId], references: [id]) // Relationship with Company
+  department Department @relation(fields: [departmentId], references: [id]) // Relationship with Department
+  salary     Salary     @relation(fields: [salaryId], references: [id]) // Relationship with Salary
+}
+
+model Salary {
+  id        String     @id @default(uuid()) @db.Uuid // Use UUID
+  amount    Float // Salary amount
+  currency  String // Currency type (USD, EUR, etc.)
+  employees Employee[] // One-to-many relation with Employee
+}
+
+// Candidate model (additional table as requested)
+model Candidate {
+  id        String   @id @default(cuid()) // Unique ID for Candidate
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  appliedAt DateTime @default(now()) // Date of application
+  position  String // Position applied for
+  companyId String   @db.Uuid // Foreign key to Company
+  company   Company  @relation(fields: [companyId], references: [id]) // Relationship with Company
+}
